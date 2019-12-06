@@ -12,6 +12,6 @@ import com.kyiminhan.spring.entity.Account;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-	Optional<Account> findByEmail();
+	Optional<Account> findByEmail(String email);
 
 }

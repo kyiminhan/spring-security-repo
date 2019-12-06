@@ -1,5 +1,5 @@
 package com.kyiminhan.spring.types;
 
-public enum Lock {
+public enum AccountLock {
 	UNLOCKED, LOCKED;
 }

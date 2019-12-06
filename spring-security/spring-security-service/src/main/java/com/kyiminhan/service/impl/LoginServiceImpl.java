@@ -22,10 +22,10 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	private AccountRepository accRepo;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Account account = this.accRepo.findByEmail().orElse(null);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		Account account = this.accRepo.findByEmail(email).orElse(null);
 		if (null == account) {
-			throw new UsernameNotFoundException("User'name " + username + " is not found!");
+			throw new UsernameNotFoundException("User'name " + email + " is not found!");
 		}
 		return User.builder().account(account).build();
 	}

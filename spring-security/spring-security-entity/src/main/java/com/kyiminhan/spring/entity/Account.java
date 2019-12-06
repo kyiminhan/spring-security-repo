@@ -11,7 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
-import com.kyiminhan.spring.types.Lock;
+import com.kyiminhan.spring.types.AccountLock;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,8 +43,8 @@ public class Account extends BaseEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
+	private AccountLock accountLock;
 
-	private Lock lock;
 	@Column(nullable = false)
 	private int loginAttempt;
 
