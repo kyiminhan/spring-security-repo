@@ -17,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
@@ -61,14 +60,18 @@ public class Account extends BaseEntity {
 	private Set<AccountAuthority> authorities;
 
 	@Builder
-	public Account(@NonNull Long id, String firstName, String lastName, String email, String password,
-			Set<AccountPassword> passwords, Set<AccountAuthority> authorities) {
-
+	public Account(Long id, String firstName, String lastName, String email, String password, AccountLock accountLock,
+			int loginAttempt, LocalDateTime loginDt, LocalDateTime passwordExpiredDt, Set<AccountPassword> passwords,
+			Set<AccountAuthority> authorities) {
 		super(id);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
+		this.accountLock = accountLock;
+		this.loginAttempt = loginAttempt;
+		this.loginDt = loginDt;
+		this.passwordExpiredDt = passwordExpiredDt;
 		this.passwords = passwords;
 		this.authorities = authorities;
 	}

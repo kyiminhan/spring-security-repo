@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import com.kyiminhan.spring.types.Authority;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,4 +34,11 @@ public class AccountAuthority extends BaseEntity {
 			CascadeType.REFRESH }, fetch = FetchType.EAGER, targetEntity = Account.class, optional = true)
 	@JoinColumn
 	private Account account;
+
+	@Builder
+	public AccountAuthority(Long id, Authority authority, Account account) {
+		super(id);
+		this.authority = authority;
+		this.account = account;
+	}
 }

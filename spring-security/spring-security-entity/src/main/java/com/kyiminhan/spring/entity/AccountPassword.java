@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
@@ -32,7 +31,7 @@ public class AccountPassword extends BaseEntity {
 	private Account account;
 
 	@Builder
-	public AccountPassword(@NonNull Long id, String password, Account account) {
+	public AccountPassword(Long id, String password, Account account) {
 		super(id);
 		this.password = password;
 		this.account = account;
