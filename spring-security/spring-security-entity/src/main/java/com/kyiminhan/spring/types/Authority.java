@@ -9,12 +9,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public enum Authority {
 
-	USER(0, "User"), MANAGER(1, "Manager"), ADMIN(2, "Admin");
+	USER(0, "User", "ROLE_USER"), MANAGER(1, "Manager", "ROLE_MANAGER"), ADMIN(2, "Admin", "ROLE_ADMIN");
 
 	@Getter
 	@Setter
 	private int id;
 	@Getter
 	@Setter
-	private String authority;
+	private String authRole;
+	@Getter
+	@Setter
+	private String grantAuthRole;
 }

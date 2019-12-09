@@ -1,19 +1,43 @@
 package com.kyiminhan.spring.config;
 
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import lombok.NonNull;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Autowired
+	@Qualifier("loginServiceImpl")
+	private UserDetailsService userDetailsService;
+
+	@Autowired
+	private SuccessHandlar successHandlar;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -26,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.formLogin()
 		.loginPage("/login")
 		.loginProcessingUrl("/login")
-		.defaultSuccessUrl("/home")
+		.successHandler(this.successHandlar)
 		.usernameParameter("email")
 		.passwordParameter("password")
 		.permitAll();
@@ -37,7 +61,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		super.configure(auth);
+
+		final DaoAuthenticationProvider provider = new DaoAuthenticationProvider() {
+			@Override
+			public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
+				if (StringUtils.isBlank(authentication.getName())) {
+					throw new UsernameNotFoundException("Email is required.");
+				} else if (!ObjectUtils.anyNotNull(authentication.getCredentials())
+						| StringUtils.isBlank(authentication.getCredentials().toString())) {
+					throw new BadCredentialsException("Password is required.");
+				} else {
+					try {
+						return super.authenticate(authentication);
+					} catch (final BadCredentialsException e) {
+						throw new BadCredentialsException("Invalid email and password.");
+					}
+				}
+			}
+
+			@Override
+			public void setPasswordEncoder(final PasswordEncoder passwordEncoder) {
+				super.setPasswordEncoder(SecurityConfig.this.getPasswordEncoder());
+			}
+		};
+		provider.setUserDetailsService((@NonNull final String email) -> {
+			final UserDetails userDetails = SecurityConfig.this.userDetailsService.loadUserByUsername(email);
+			if (!ObjectUtils.anyNotNull(userDetails)) {
+				throw new UsernameNotFoundException("User Not Found");
+			}
+			return userDetails;
+		});
+		auth.authenticationProvider(provider);
 	}
 
 	@Override
@@ -45,9 +99,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/static/css/**", "/static/js/**");
 	}
 
-	@Lazy
-	@Bean
-	public PasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 }

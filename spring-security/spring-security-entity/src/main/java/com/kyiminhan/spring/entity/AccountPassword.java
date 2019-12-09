@@ -27,7 +27,7 @@ public class AccountPassword extends BaseEntity {
 
 	@ManyToOne(cascade = { CascadeType.DETACH,
 			CascadeType.REFRESH }, fetch = FetchType.EAGER, targetEntity = Account.class, optional = true)
-	@JoinColumn
+	@JoinColumn(name = "account_id")
 	private Account account;
 
 	@Builder

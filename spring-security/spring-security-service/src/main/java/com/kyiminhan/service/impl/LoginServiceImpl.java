@@ -5,18 +5,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.kyiminhan.dto.User;
 import com.kyiminhan.service.LoginService;
-import com.kyiminhan.service.dto.User;
 import com.kyiminhan.spring.entity.Account;
 import com.kyiminhan.spring.entity.AccountAuthority;
 import com.kyiminhan.spring.entity.AccountPassword;
@@ -26,8 +25,7 @@ import com.kyiminhan.spring.types.Authority;
 
 import lombok.Setter;
 
-@Lazy
-@Service
+@Service("loginServiceImpl")
 @Setter(onMethod = @__(@Autowired))
 public class LoginServiceImpl implements LoginService, UserDetailsService {
 
@@ -35,6 +33,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 
 	private PasswordEncoder encoder;
 
+	@Transactional(readOnly = true)
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Account account = this.accRepo.findByEmail(email).orElse(null);
@@ -44,7 +43,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		return User.builder().account(account).build();
 	}
 
-	@Transactional(rollbackOn = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	@PostConstruct
 	private void initLoadData() {
 		if (0 == this.accRepo.count()) {
