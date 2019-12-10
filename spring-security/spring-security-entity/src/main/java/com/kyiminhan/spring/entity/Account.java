@@ -53,10 +53,10 @@ public class Account extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDateTime passwordExpiredDt;
 
-	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = AccountPassword.class)
+	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = AccountPassword.class)
 	private Set<AccountPassword> passwords;
 
-	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = AccountAuthority.class)
+	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = AccountAuthority.class)
 	private Set<AccountAuthority> authorities;
 
 	@Builder
