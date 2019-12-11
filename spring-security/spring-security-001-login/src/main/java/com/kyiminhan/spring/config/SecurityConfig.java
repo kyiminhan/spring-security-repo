@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -25,6 +26,7 @@ import lombok.NonNull;
 
 @Configuration
 @EnableWebSecurity
+@ComponentScan(basePackages = "com.kyiminhan")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
@@ -37,23 +39,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 
 	@Autowired
-	private SuccessHandlar successHandlar;
+	private AuthenticationSuccessHandler successHandlar;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+
 		http.authorizeRequests().antMatchers("/login").permitAll();
-		http.authorizeRequests().antMatchers("/**").hasAnyRole("USER", "MANAGER", "ADMIN");
+		http.authorizeRequests().antMatchers("/", "/**").hasAnyRole("USER", "MANAGER", "ADMIN");
 		http.authorizeRequests().antMatchers("/user/**").hasAnyRole("USER");
 		http.authorizeRequests().antMatchers("/manager/**").hasAnyRole("MANAGER");
 		http.authorizeRequests().antMatchers("/admin/**").hasAnyRole("ADMIN");
+
 		// @formatter:off
 		http
 		.formLogin()
-		.loginPage("/login")
+		.loginPage("/login.html")
 		.loginProcessingUrl("/login")
-		.successHandler(this.successHandlar)
 		.usernameParameter("email")
 		.passwordParameter("password")
+		.successHandler(this.successHandlar)
 		.permitAll();
 		// @formatter:on
 
@@ -66,15 +70,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		final DaoAuthenticationProvider provider = new DaoAuthenticationProvider() {
 			@Override
 			public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
+				
 				if (StringUtils.isBlank(authentication.getName())) {
+					
 					throw new UsernameNotFoundException("Email is required.");
+					
 				} else if (!ObjectUtils.anyNotNull(authentication.getCredentials())
 						| StringUtils.isBlank(authentication.getCredentials().toString())) {
+					
 					throw new BadCredentialsException("Password is required.");
+					
 				} else {
+					
 					try {
+						
 						return super.authenticate(authentication);
+						
 					} catch (final BadCredentialsException e) {
+						
 						throw new BadCredentialsException("Invalid email and password.");
 					}
 				}

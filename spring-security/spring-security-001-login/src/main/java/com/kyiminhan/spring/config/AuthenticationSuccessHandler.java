@@ -8,21 +8,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import com.kyiminhan.spring.types.Authority;
 
-@Lazy
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
-public class SuccessHandlar extends SimpleUrlAuthenticationSuccessHandler {
+public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
 	@Override
 	protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
 			throws IOException, ServletException {
 		String targetUrl = determineTargetUrl(authentication);
 		if (response.isCommitted()) {
+			log.info("login successful.");
 			return;
 		}
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);

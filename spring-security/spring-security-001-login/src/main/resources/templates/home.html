@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
@@ -18,7 +19,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.css" />
 
-<title>Laws Consulting</title>
+<title>Spring Security</title>
 </head>
 <body>
 	<header>
@@ -35,6 +36,15 @@
 					<li class="nav-item"><a class="nav-link" href="#"><i
 							class="fa fa-home mr-1"></i>Home </a></li>
 				</ul>
+				<div class="my-2 my-lg-0">
+					<ul class="navbar-nav mr-auto">
+						<!-- 						<li class="nav-item"><a class="nav-link" -->
+						<!-- 							href="member/M001-registeration.html"><i -->
+						<!-- 								class="fa fa-registered mr-1"></i>Register </a></li> -->
+						<li class="nav-item"><a class="nav-link" th:href="@{/logout}"><i
+								class="fa fa-sign-out-alt mr-1"></i>Logout </a></li>
+					</ul>
+				</div>
 			</div>
 		</nav>
 	</header>
