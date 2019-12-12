@@ -23,6 +23,9 @@
 		<module>spring-security-service</module>
 		<module>spring-security-001-login</module>
 		<module>spring-security-002-login-remember-me</module>
+		<module>
+			spring-security-003-login-remember-me-persistence
+		</module>
 	</modules>
 	<dependencies>
 		<dependency>
