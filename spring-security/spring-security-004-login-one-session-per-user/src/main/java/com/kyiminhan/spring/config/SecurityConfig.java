@@ -6,7 +6,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +25,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import lombok.NonNull;
@@ -94,11 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 		.sessionManagement()
 		.maximumSessions(1)
-		.maxSessionsPreventsLogin(false)
-		.sessionRegistry(this.sessionRegistry())
-		;
-
-		// https://mtyurt.net/post/spring-expiring-all-sessions-of-a-user.html
+		.maxSessionsPreventsLogin(false);
 
 		// @formatter:on
 
@@ -159,20 +151,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		final JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl = new JdbcTokenRepositoryImpl();
 		jdbcTokenRepositoryImpl.setDataSource(this.dataSource);
 		return jdbcTokenRepositoryImpl;
-	}
-
-	@Bean
-	public SessionRegistry sessionRegistry() {
-		final SessionRegistry sessionRegistry = new SessionRegistryImpl();
-		return sessionRegistry;
-	}
-
-	// public HttpSessionEventPublisher httpSessionEventPublisher() {
-	// return new HttpSessionEventPublisher();
-	// }
-
-	@Bean
-	public static ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
-		return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
 	}
 }
