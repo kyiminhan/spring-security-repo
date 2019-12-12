@@ -1,5 +1,7 @@
 package com.kyiminhan.spring.config;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import lombok.NonNull;
 
@@ -41,8 +46,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AuthenticationSuccessHandler successHandlar;
 
+	@Autowired
+	private DataSource dataSource;
+
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	protected void configure(final HttpSecurity http) throws Exception {
 
 		http.authorizeRequests().antMatchers("/login").permitAll();
 		http.authorizeRequests().antMatchers("/user/**").hasAnyRole("USER");
@@ -59,19 +67,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.passwordParameter("password")
 		.successHandler(this.successHandlar)
 		.permitAll();
-		
+
+		http
+		.logout()
+        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+        .logoutSuccessUrl("/login")
+        .deleteCookies("JSESSIONID")
+        .invalidateHttpSession(true);
+
+		http
+		.exceptionHandling()
+		.accessDeniedPage("/access-denied");
+
 		http.rememberMe()
 		.key("uniqueAndSecret")
 		.rememberMeParameter("remember-me")
-		//.tokenValiditySeconds(86400)// keep for one day
+		.rememberMeCookieName("my-remember-me")
+		.tokenValiditySeconds(24 * 60 * 60 )// keep for one day
+		.tokenRepository(this.tokenRepository())
 		.userDetailsService(this.userDetailsService);
+
 		// @formatter:on
 
 		super.configure(http);
 	}
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
 
 		final DaoAuthenticationProvider provider = new DaoAuthenticationProvider() {
 			@Override
@@ -115,7 +137,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	public void configure(WebSecurity web) throws Exception {
+	public void configure(final WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/static/css/**", "/static/js/**");
+	}
+
+	@Bean
+	public PersistentTokenRepository tokenRepository() {
+		final JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl = new JdbcTokenRepositoryImpl();
+		jdbcTokenRepositoryImpl.setDataSource(this.dataSource);
+		return jdbcTokenRepositoryImpl;
 	}
 }
