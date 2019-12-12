@@ -50,7 +50,7 @@
 					<form class="p-4" th:action="@{/login}" th:method="post">
 						<h5 class="pb-2">LOGIN</h5>
 						<div
-							th:if="${param.error} and ${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
+							th:if="${param.error != null} and ${session['SPRING_SECURITY_LAST_EXCEPTION'] != null}">
 							<div class="alert alert-danger">
 								<small
 									th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></small>
@@ -84,10 +84,11 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="row justify-content-center pt-3">
 							<button type="submit"
 								class="btn btn-sm btn-secondary mr-2 col-md-4">
-								<i class="fas fa-sign-in-alt"></i>Login
+								<i class="fas fa-sign-in-alt mr-1"></i>Login
 							</button>
 						</div>
 					</form>

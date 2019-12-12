@@ -45,20 +45,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests().antMatchers("/login").permitAll();
-		http.authorizeRequests().antMatchers("/", "/**").hasAnyRole("USER", "MANAGER", "ADMIN");
 		http.authorizeRequests().antMatchers("/user/**").hasAnyRole("USER");
-		http.authorizeRequests().antMatchers("/manager/**").hasAnyRole("MANAGER");
 		http.authorizeRequests().antMatchers("/admin/**").hasAnyRole("ADMIN");
+		http.authorizeRequests().antMatchers("/manager/**").hasAnyRole("MANAGER");
+		http.authorizeRequests().antMatchers("/", "/home").hasAnyRole("USER", "MANAGER", "ADMIN");
 
 		// @formatter:off
 		http
 		.formLogin()
-		.loginPage("/login.html")
+		.loginPage("/login")
 		.loginProcessingUrl("/login")
 		.usernameParameter("email")
 		.passwordParameter("password")
 		.successHandler(this.successHandlar)
 		.permitAll();
+		
+		http.rememberMe()
+		.key("uniqueAndSecret")
+		.rememberMeParameter("remember-me")
+		.userDetailsService(this.userDetailsService);
 		// @formatter:on
 
 		super.configure(http);
@@ -70,24 +75,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		final DaoAuthenticationProvider provider = new DaoAuthenticationProvider() {
 			@Override
 			public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
-				
+
 				if (StringUtils.isBlank(authentication.getName())) {
-					
+
 					throw new UsernameNotFoundException("Email is required.");
-					
+
 				} else if (!ObjectUtils.anyNotNull(authentication.getCredentials())
 						| StringUtils.isBlank(authentication.getCredentials().toString())) {
-					
+
 					throw new BadCredentialsException("Password is required.");
-					
+
 				} else {
-					
+
 					try {
-						
+
 						return super.authenticate(authentication);
-						
+
 					} catch (final BadCredentialsException e) {
-						
+
 						throw new BadCredentialsException("Invalid email and password.");
 					}
 				}
@@ -112,5 +117,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/static/css/**", "/static/js/**");
 	}
-
 }
