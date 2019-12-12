@@ -63,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.rememberMe()
 		.key("uniqueAndSecret")
 		.rememberMeParameter("remember-me")
+		//.tokenValiditySeconds(86400)// keep for one day
 		.userDetailsService(this.userDetailsService);
 		// @formatter:on
 
