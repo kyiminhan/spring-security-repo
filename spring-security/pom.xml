@@ -27,6 +27,7 @@
 			spring-security-003-login-remember-me-persistence
 		</module>
 		<module>spring-security-004-login-one-session-per-user</module>
+		<module>spring-security-005-login-attempt</module>
 	</modules>
 	<dependencies>
 		<dependency>
