@@ -3,7 +3,6 @@ package com.kyiminhan.spring.config;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,33 +15,25 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import lombok.NonNull;
+import com.kyiminhan.service.LoginService;
 
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackages = "com.kyiminhan")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Bean
-	public PasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
 	@Autowired
-	@Qualifier("loginServiceImpl")
-	private UserDetailsService userDetailsService;
+	private LoginService loginService;
 
 	@Autowired
 	private AuthenticationSuccessHandler successHandlar;
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	protected void configure(final HttpSecurity http) throws Exception {
 
 		http.authorizeRequests().antMatchers("/login").permitAll();
 		http.authorizeRequests().antMatchers("/user/**").hasAnyRole("USER");
@@ -65,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
 
 		final DaoAuthenticationProvider provider = new DaoAuthenticationProvider() {
 			@Override
@@ -98,18 +89,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				super.setPasswordEncoder(SecurityConfig.this.getPasswordEncoder());
 			}
 		};
-		provider.setUserDetailsService((@NonNull final String email) -> {
-			final UserDetails userDetails = SecurityConfig.this.userDetailsService.loadUserByUsername(email);
-			if (!ObjectUtils.anyNotNull(userDetails)) {
-				throw new UsernameNotFoundException("User Not Found");
-			}
-			return userDetails;
-		});
+		provider.setUserDetailsService(this.loginService);
 		auth.authenticationProvider(provider);
 	}
 
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 	@Override
-	public void configure(WebSecurity web) throws Exception {
+	public void configure(final WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/static/css/**", "/static/js/**");
 	}
 }

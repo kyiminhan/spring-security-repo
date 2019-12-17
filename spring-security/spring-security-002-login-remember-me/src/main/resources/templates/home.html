@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <!-- Required meta tags -->
@@ -56,6 +58,15 @@
 			<div class="row justify-content-center">
 
 				<div class="col-md-4 ">HOME</div>
+
+				<div sec:authorize="isRememberMe()">
+					<h2># This user is login by "Remember Me Cookies".</h2>
+				</div>
+
+				<div sec:authorize="isFullyAuthenticated()">
+					<h6># This user is login by username / password.</h6>
+				</div>
+
 			</div>
 		</div>
 	</div>
