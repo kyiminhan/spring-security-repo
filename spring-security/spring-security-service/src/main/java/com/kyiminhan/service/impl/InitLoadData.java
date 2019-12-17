@@ -43,7 +43,7 @@ public class InitLoadData {
 				.password(userPwd)
 				.loginDt(LocalDateTime.now())
 				.passwordExpiredDt(LocalDateTime.now().plusDays(90))
-				.accountLock(AccountLock.UNLOCKED)
+				.accountLock(AccountLock.UN_LOCKED)
 				.build();
 		// @formatter:on
 			Set<AccountAuthority> authorities = new HashSet<>();
@@ -67,7 +67,7 @@ public class InitLoadData {
 					.password(managerPwd)
 					.loginDt(LocalDateTime.now())
 					.passwordExpiredDt(LocalDateTime.now().plusDays(90))
-					.accountLock(AccountLock.UNLOCKED)
+					.accountLock(AccountLock.UN_LOCKED)
 					.build();
 			// @formatter:on
 			authorities = new HashSet<>();
@@ -97,7 +97,7 @@ public class InitLoadData {
 						.password(adminPwd)
 						.loginDt(LocalDateTime.now())
 						.passwordExpiredDt(LocalDateTime.now().plusDays(90))
-						.accountLock(AccountLock.UNLOCKED)
+						.accountLock(AccountLock.UN_LOCKED)
 						.build();
 				// @formatter:on
 			authorities = new HashSet<>();

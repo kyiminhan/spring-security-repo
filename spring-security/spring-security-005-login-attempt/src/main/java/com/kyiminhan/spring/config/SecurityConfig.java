@@ -111,10 +111,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 					try {
 
-						return super.authenticate(authentication);
+						final Authentication authenticate = this.authenticate(authentication);
+						SecurityConfig.this.loginService.doLoginSuccessProcess(authentication.getName());
+						return authenticate;
 
 					} catch (final BadCredentialsException e) {
 
+						SecurityConfig.this.loginService.doLoginFailureProcess(authentication.getName());
 						throw new BadCredentialsException("Invalid email and password.");
 
 					} catch (final AccountExpiredException e) {
