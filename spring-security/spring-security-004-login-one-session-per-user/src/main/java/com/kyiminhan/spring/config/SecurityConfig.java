@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +21,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
@@ -97,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				if (StringUtils.isBlank(authentication.getName())) {
 
-					throw new UsernameNotFoundException("Email is required.");
+					throw new BadCredentialsException("Email is required.");
 
 				} else if (!ObjectUtils.anyNotNull(authentication.getCredentials())
 						| StringUtils.isBlank(authentication.getCredentials().toString())) {
@@ -113,6 +116,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					} catch (final BadCredentialsException e) {
 
 						throw new BadCredentialsException("Invalid email and password.");
+
+					} catch (final AccountExpiredException e) {
+
+						throw new AccountExpiredException("Your account was expired.");
+
+					} catch (final LockedException e) {
+
+						throw new LockedException("Oh! Your account was locked. Contact the admin.");
+
+					} catch (final CredentialsExpiredException e) {
+
+						throw new CredentialsExpiredException("Your password was expired.");
+
+					} catch (final DisabledException e) {
+
+						throw new DisabledException("User is disabled.");
+
 					}
 				}
 			}

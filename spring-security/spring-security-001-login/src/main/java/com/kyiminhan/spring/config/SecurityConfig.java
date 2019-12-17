@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -64,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				if (StringUtils.isBlank(authentication.getName())) {
 
-					throw new UsernameNotFoundException("Email is required.");
+					throw new BadCredentialsException("Email is required.");
 
 				} else if (!ObjectUtils.anyNotNull(authentication.getCredentials())
 						| StringUtils.isBlank(authentication.getCredentials().toString())) {
@@ -80,6 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					} catch (final BadCredentialsException e) {
 
 						throw new BadCredentialsException("Invalid email and password.");
+
 					}
 				}
 			}
