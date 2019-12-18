@@ -49,7 +49,7 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return (this.account.getLoginDt().equals(LocalDateTime.now().plusMonths(6))) ? false : true;
+		return (LocalDateTime.now().isBefore((this.account.getLoginDt().plusMonths(24)))) ? true : false;
 	}
 
 	@Override

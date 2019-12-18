@@ -111,7 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 					try {
 
-						final Authentication authenticate = this.authenticate(authentication);
+						final Authentication authenticate = super.authenticate(authentication);
 						SecurityConfig.this.loginService.doLoginSuccessProcess(authentication.getName());
 						return authenticate;
 
