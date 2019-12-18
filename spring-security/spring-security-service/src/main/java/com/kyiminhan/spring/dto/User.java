@@ -1,4 +1,4 @@
-package com.kyiminhan.dto;
+package com.kyiminhan.spring.dto;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

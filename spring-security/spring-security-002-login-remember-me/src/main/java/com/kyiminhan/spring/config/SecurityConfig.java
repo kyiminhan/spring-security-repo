@@ -18,7 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.kyiminhan.service.LoginService;
+import com.kyiminhan.spring.service.LoginService;
 
 @Configuration
 @EnableWebSecurity

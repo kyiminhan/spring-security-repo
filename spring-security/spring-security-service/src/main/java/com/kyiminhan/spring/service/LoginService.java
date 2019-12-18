@@ -1,4 +1,4 @@
-package com.kyiminhan.service;
+package com.kyiminhan.spring.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
