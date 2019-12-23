@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kyiminhan.spring.service.AS001Service;
 import com.kyiminhan.spring.service.dto.AS001RegistrationDto;
@@ -37,12 +38,15 @@ public class AS001Controller {
 
 	@PostMapping(value = { "/do-registration" })
 	public String doRegistration(@ModelAttribute("dto") @Validated final AS001RegistrationDto dto,
-	        final BindingResult result, final Model model) {
+			final BindingResult result, final RedirectAttributes attributes) {
+
 		if (result.hasErrors()) {
-			model.addAttribute("dto", dto);
 			return "setting/AS001-registration";
 		}
+
 		this.as001Service.userAccountRegistration(dto);
+		attributes.getFlashAttributes().clear();
+		attributes.addFlashAttribute("messages", "successfully.register");
 		return "redirect:/do-registration";
 	}
 

@@ -30,29 +30,36 @@ public class RegisteredAccount extends BaseEntity {
 	@NotEmpty
 	@Column(nullable = false)
 	private String firstName;
+
 	@NotNull
 	@NotEmpty
 	@Column(nullable = false)
 	private String lastName;
+
 	@NotNull
 	@NotEmpty
 	@Column(nullable = false, unique = true)
 	private String email;
+
 	@NotNull
 	@NotEmpty
 	@Column(nullable = false)
 	private String password;
+
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column
-	@NotEmpty
 	private Authority authority;
+
+	@NotNull
 	@Column(nullable = false)
 	private LocalDateTime expiry;
 
 	@Builder
-	public RegisteredAccount(final Long id, @NotNull final String firstName, @NotNull final String lastName,
-	        @NotNull final String email, @NotNull final String password, final Authority authority,
-	        final LocalDateTime expiry) {
+	public RegisteredAccount(final Long id, @NotNull @NotEmpty final String firstName,
+			@NotNull @NotEmpty final String lastName, @NotNull @NotEmpty final String email,
+			@NotNull @NotEmpty final String password, @NotNull final Authority authority,
+			@NotNull final LocalDateTime expiry) {
 		super(id);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -61,4 +68,5 @@ public class RegisteredAccount extends BaseEntity {
 		this.authority = authority;
 		this.expiry = expiry;
 	}
+
 }
