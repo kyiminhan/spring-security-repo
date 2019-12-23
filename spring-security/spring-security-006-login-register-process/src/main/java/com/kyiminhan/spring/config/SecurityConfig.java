@@ -167,4 +167,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		jdbcTokenRepositoryImpl.setDataSource(this.dataSource);
 		return jdbcTokenRepositoryImpl;
 	}
+
 }

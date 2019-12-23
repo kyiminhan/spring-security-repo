@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AS001RegisterationDto implements Serializable {
+public class AS001RegistrationDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

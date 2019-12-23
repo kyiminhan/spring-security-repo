@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.kyiminhan.spring.types.Authority;
@@ -26,19 +27,24 @@ public class RegisteredAccount extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
+	@NotEmpty
 	@Column(nullable = false)
 	private String firstName;
 	@NotNull
+	@NotEmpty
 	@Column(nullable = false)
 	private String lastName;
 	@NotNull
-	@Column(nullable = false)
+	@NotEmpty
+	@Column(nullable = false, unique = true)
 	private String email;
 	@NotNull
+	@NotEmpty
 	@Column(nullable = false)
 	private String password;
 	@Enumerated(EnumType.STRING)
 	@Column
+	@NotEmpty
 	private Authority authority;
 	@Column(nullable = false)
 	private LocalDateTime expiry;

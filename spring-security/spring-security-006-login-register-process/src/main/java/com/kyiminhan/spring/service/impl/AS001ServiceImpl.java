@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.kyiminhan.spring.entity.RegisteredAccount;
 import com.kyiminhan.spring.repository.RegisteredAccountRepository;
 import com.kyiminhan.spring.service.AS001Service;
-import com.kyiminhan.spring.service.dto.AS001RegisterationDto;
+import com.kyiminhan.spring.service.dto.AS001RegistrationDto;
 import com.kyiminhan.spring.types.Authority;
 
 import lombok.Setter;
@@ -25,7 +25,7 @@ public class AS001ServiceImpl implements AS001Service {
 	private RegisteredAccountRepository registerationRepository;
 
 	@Override
-	public void userAccountRegistration(final AS001RegisterationDto dto) {
+	public void userAccountRegistration(final AS001RegistrationDto dto) {
 
 		final RegisteredAccount registeredAccount = RegisteredAccount.builder().build();
 

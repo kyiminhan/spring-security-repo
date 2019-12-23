@@ -67,44 +67,62 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<i class="fas fa-user"></i> <label class="mb-0"
-										for="txtFitstName">First Name </label><input type="text"
-										th:field="*{firstName}" id="txtFitstName"
-										class="form-control form-control-sm" autofocus="autofocus"
-										autocomplete="off">
+										for="txtFitstName" th:text="#{lblFirstName}"></label><input
+										type="text" th:field="*{firstName}" id="txtFitstName"
+										class="form-control form-control-sm"
+										th:classappend="${#fields.hasErrors('firstName')} ? border-danger"
+										autofocus="autofocus" autocomplete="off"> <small
+										class="text-danger" th:if="${#fields.hasErrors('firstName')}"
+										th:errors="*{firstName}"></small>
+
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<i class="fas fa-user"></i> <label class="mb-0"
-										for="txtLastName">Last Name </label><input type="text"
-										th:field="*{lastName}" id="txtLastName"
-										class="form-control form-control-sm" autocomplete="off">
+										for="txtLastName" th:text="#{lblLastName}"></label><input
+										type="text" th:field="*{lastName}" id="txtLastName"
+										class="form-control form-control-sm"
+										th:classappend="${#fields.hasErrors('lastName')} ? border-danger"
+										autocomplete="off"> <small class="text-danger"
+										th:if="${#fields.hasErrors('lastName')}"
+										th:errors="*{lastName}"></small>
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<i class="fas fa-envelope"></i> <label class="mb-0"
-										for="txtEmail">Email </label><input type="text" id="txtEmail"
-										th:field="*{email}" class="form-control form-control-sm"
-										autocomplete="off">
+										for="txtEmail" th:text="#{lblEmail}"> </label><input
+										type="text" id="txtEmail" th:field="*{email}"
+										class="form-control form-control-sm"
+										th:classappend="${#fields.hasErrors('email')} ? border-danger"
+										autocomplete="off"> <small class="text-danger"
+										th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<i class="fas fa-unlock-alt"></i> <label class="mb-0"
-										for="txtPassword">Password</label><input type="password"
-										th:field="*{password}" id="txtPassword"
-										class="form-control form-control-sm" autocomplete="off">
+										for="txtPassword" th:text="#{lblPassword}"></label><input
+										type="password" th:field="*{password}" id="txtPassword"
+										class="form-control form-control-sm"
+										th:classappend="${#fields.hasErrors('password')} ? border-danger"
+										autocomplete="off"> <small class="text-danger"
+										th:if="${#fields.hasErrors('password')}"
+										th:errors="*{password}"></small>
 
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<i class="fas fa-unlock-alt"></i> <label class="mb-0"
-										for="txtConfirmPassword">Confirm Password</label><input
+										for="txtConfirmPassword" th:text="#{lblConfirmPassword}"></label><input
 										type="password" th:field="*{confirmPassword}"
 										id="txtConfirmPassword" class="form-control form-control-sm"
-										autocomplete="off">
+										th:classappend="${#fields.hasErrors('confirmPassword')} ? border-danger"
+										autocomplete="off"> <small class="text-danger"
+										th:if="${#fields.hasErrors('confirmPassword')}"
+										th:errors="*{confirmPassword}"></small>
 								</div>
 							</div>
 						</div>
