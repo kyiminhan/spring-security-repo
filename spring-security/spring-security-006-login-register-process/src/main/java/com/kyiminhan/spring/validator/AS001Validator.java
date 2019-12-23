@@ -21,16 +21,21 @@ public class AS001Validator extends MyValidatorImpl {
 	}
 
 	@Override
-	public void validate(final Object targetObj, final Errors e) {
-
-		final AS001RegistrationDto dto = (AS001RegistrationDto) targetObj;
+	protected void validateRequired(final Object target, final Errors e) {
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "firstName", "required", this.getMsgObjArr("firstName"));
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "lastName", "required", this.getMsgObjArr("lastName"));
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "email", "required", this.getMsgObjArr("email"));
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "password", "required", this.getMsgObjArr("password"));
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "confirmPassword", "required",
-		        this.getMsgObjArr("confirmPassword"));
+				this.getMsgObjArr("confirmPassword"));
+
+	}
+
+	@Override
+	protected void validateCustomize(final Object target, final Errors e) {
+
+		final AS001RegistrationDto dto = (AS001RegistrationDto) target;
 
 		if (!e.hasErrors()) {
 			if (!StringUtils.equals(dto.getPassword(), dto.getConfirmPassword())) {
