@@ -43,10 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 
+	private final String[] publicMatchers = { "/login", "/do-registration", "/confirm-registration" };
+
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/login").permitAll();
+		http.authorizeRequests().antMatchers(this.publicMatchers).permitAll();
 		http.authorizeRequests().antMatchers("/user/**").hasAnyRole("USER");
 		http.authorizeRequests().antMatchers("/admin/**").hasAnyRole("ADMIN");
 		http.authorizeRequests().antMatchers("/manager/**").hasAnyRole("MANAGER");
@@ -103,7 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					throw new BadCredentialsException("Email is required.");
 
 				} else if (!ObjectUtils.anyNotNull(authentication.getCredentials())
-						| StringUtils.isBlank(authentication.getCredentials().toString())) {
+				        | StringUtils.isBlank(authentication.getCredentials().toString())) {
 
 					throw new BadCredentialsException("Password is required.");
 
