@@ -1,5 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="en"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
@@ -21,59 +24,9 @@
 <title>Laws Consulting</title>
 </head>
 <body>
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModalCenter" tabindex="-1"
-		role="dialog" aria-labelledby="exampleModalCenterTitle"
-		aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-body">
-					<div class="row justify-content-center">
-
-						<div class="col-md-10 ">
-							<form class="p-4" action="#">
-								<h5 class="pb-2">LOGIN</h5>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<i class="fas fa-envelope"></i> <label class="mb-0"
-												for="txtEmail">Email</label><input type="text" id="txtEmail"
-												name="email" class="form-control form-control-sm"
-												autofocus="autofocus" autocomplete="off"> <small
-												id="emailHelp" class="form-text text-muted text-right">We'll
-												never share your email with anyone else.</small>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<i class="fas fa-unlock-alt"></i> <label class="mb-0"
-												for="txtPassword">Password</label><input type="password"
-												id="txtPassword" name="password"
-												class="form-control form-control-sm" autocomplete="off">
-											<a href="setting/AS001-forgot-pwd-request.html"
-												class="text-decoration-none"><small
-												class="form-text text-right ">Forgot Password</small></a>
-										</div>
-									</div>
-								</div>
-								<div class="row justify-content-center pt-3">
-									<a class="btn btn-sm btn-secondary mr-2 col-md-4"
-										href="member/M005-question-create-1.html"><i
-										class="fas fa-sign-in-alt"></i> Login </a>
-
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<header>
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info">
-			<a class="navbar-brand" href="S001-home.html">Laws Consulting</a>
+			<a class="navbar-brand" href="S001-home.html">Spring Security</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarsExampleDefault"
 				aria-controls="navbarsExampleDefault" aria-expanded="false"
@@ -85,25 +38,15 @@
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item"><a class="nav-link"
 						href="../S001-home.html"><i class="fa fa-home mr-1"></i>Home </a></li>
-					<li class="nav-item"><a class="nav-link"
-						href="../S007-sample-qa.html"><i
-							class="far fa-question-circle mr-1"></i>Sample Q/A </a></li>
-					<li class="nav-item"><a class="nav-link" href="#"
-						data-toggle="modal" data-target="#exampleModalCenter"><i
-							class="fas fa-plus pl-2"></i> INQUIRY </a></li>
-					<li class="nav-item"><a class="nav-link"
-						href="../S002-about-us.html"><i class="fas fa-users mr-1"></i>About
-							Us</a></li>
 				</ul>
 
 				<div class="my-2 my-lg-0">
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item active"><a class="nav-link"
-							href="M001-registeration.html"><i
+							th:href="@{/do-registration}"><i
 								class="fa fa-registered mr-1"></i>Register </a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="../S003-login.html"><i class="fa fa-sign-in-alt mr-1"></i>Login
-						</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/login}"><i
+								class="fa fa-sign-in-alt mr-1"></i>Login </a></li>
 					</ul>
 				</div>
 
@@ -117,37 +60,40 @@
 			style="min-height: 100vh; padding-top: 4rem; margin-bottom: 0px;">
 			<div class="row justify-content-center">
 				<div class="col-md-6 ">
-					<form class="p-4">
+					<form class="p-4" th:action="@{/do-registration}" th:method="post"
+						th:object="${dto}">
 						<h5 class="pb-2">REGISTER</h5>
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
 									<i class="fas fa-user"></i> <label class="mb-0"
 										for="txtFitstName">First Name </label><input type="text"
-										id="txtFitstName" class="form-control form-control-sm"
-										autofocus="autofocus" autocomplete="off">
+										th:field="*{firstName}" id="txtFitstName"
+										class="form-control form-control-sm" autofocus="autofocus"
+										autocomplete="off">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<i class="fas fa-user"></i> <label class="mb-0"
 										for="txtLastName">Last Name </label><input type="text"
-										id="txtLastName" class="form-control form-control-sm"
-										autocomplete="off">
+										th:field="*{lastName}" id="txtLastName"
+										class="form-control form-control-sm" autocomplete="off">
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<i class="fas fa-envelope"></i> <label class="mb-0"
 										for="txtEmail">Email </label><input type="text" id="txtEmail"
-										class="form-control form-control-sm" autocomplete="off">
+										th:field="*{email}" class="form-control form-control-sm"
+										autocomplete="off">
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<i class="fas fa-unlock-alt"></i> <label class="mb-0"
 										for="txtPassword">Password</label><input type="password"
-										id="txtPassword" name="password"
+										th:field="*{password}" id="txtPassword"
 										class="form-control form-control-sm" autocomplete="off">
 
 								</div>
@@ -156,16 +102,17 @@
 								<div class="form-group">
 									<i class="fas fa-unlock-alt"></i> <label class="mb-0"
 										for="txtConfirmPassword">Confirm Password</label><input
-										type="password" id="txtConfirmPassword" name="confirmPassword"
-										class="form-control form-control-sm" autocomplete="off">
+										type="password" th:field="*{confirmPassword}"
+										id="txtConfirmPassword" class="form-control form-control-sm"
+										autocomplete="off">
 								</div>
 							</div>
 						</div>
 						<div class="row justify-content-center pt-3">
 							<a class="btn btn-sm btn-secondary mr-2 col-md-2"
-								href="../S001-home.html">Cancel</a> <a
-								class="btn btn-sm btn-secondary mr-2 col-md-2"
-								href="M001-reg-confirmation.html">Register</a>
+								href="@{/login}">Cancel</a>
+							<button type="submit"
+								class="btn btn-sm btn-secondary mr-2 col-md-2">Register</button>
 						</div>
 					</form>
 				</div>
