@@ -28,6 +28,7 @@
 		</module>
 		<module>spring-security-004-login-one-session-per-user</module>
 		<module>spring-security-005-login-attempt</module>
+		<module>spring-security-006-login-register-process</module>
 	</modules>
 	<dependencies>
 		<dependency>
