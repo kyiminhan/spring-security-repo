@@ -22,7 +22,7 @@ import lombok.Setter;
 public class AS001ServiceImpl implements AS001Service {
 
 	private PasswordEncoder encoder;
-	private RegisteredAccountRepository registerationRepository;
+	private RegisteredAccountRepository regRepo;
 
 	@Override
 	public void userAccountRegistration(final AS001RegistrationDto dto) {
@@ -34,6 +34,11 @@ public class AS001ServiceImpl implements AS001Service {
 		registeredAccount.setExpiry(LocalDateTime.now().plusDays(1));
 		registeredAccount.setAuthority(Authority.USER);
 
-		this.registerationRepository.saveAndFlush(registeredAccount);
+		this.regRepo.saveAndFlush(registeredAccount);
+	}
+
+	@Override
+	public boolean hasRegisteredEmail(final String email) {
+		return (this.regRepo.findByEmail(email).orElse(null) != null) ? true : false;
 	}
 }

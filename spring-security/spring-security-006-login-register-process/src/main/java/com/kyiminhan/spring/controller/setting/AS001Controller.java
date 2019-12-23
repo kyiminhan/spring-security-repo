@@ -1,12 +1,9 @@
 package com.kyiminhan.spring.controller.setting;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,13 +39,6 @@ public class AS001Controller {
 	public String doRegistration(@ModelAttribute("dto") @Validated final AS001RegistrationDto dto,
 	        final BindingResult result, final Model model) {
 		if (result.hasErrors()) {
-			final List<FieldError> err = result.getFieldErrors();
-
-			for (final FieldError e : err) {
-				System.out.println("Error on object ---> " + e.getObjectName() + " on field ---> " + e.getField()
-				        + ". Message ---> " + e.getDefaultMessage());
-			}
-
 			model.addAttribute("dto", dto);
 			return "setting/AS001-registration";
 		}
