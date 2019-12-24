@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
 public class AppConfig {
@@ -25,5 +28,22 @@ public class AppConfig {
 		msgSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
 		msgSource.setCacheSeconds(3600);
 		return msgSource;
+	}
+
+	@Bean
+	public SpringTemplateEngine springTemplateEngine() {
+		final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+		templateEngine.addTemplateResolver(this.htmlTemplateResolver());
+		return templateEngine;
+	}
+
+	@Bean
+	public SpringResourceTemplateResolver htmlTemplateResolver() {
+		final SpringResourceTemplateResolver emailTemplateResolver = new SpringResourceTemplateResolver();
+		emailTemplateResolver.setPrefix("classpath:/templates/");
+		emailTemplateResolver.setSuffix(".html");
+		emailTemplateResolver.setTemplateMode(TemplateMode.HTML);
+		emailTemplateResolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
+		return emailTemplateResolver;
 	}
 }
