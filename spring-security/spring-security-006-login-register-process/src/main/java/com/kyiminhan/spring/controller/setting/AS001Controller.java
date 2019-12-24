@@ -9,6 +9,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -38,21 +39,20 @@ public class AS001Controller {
 
 	@PostMapping(value = { "/do-registration" })
 	public String doRegistration(@ModelAttribute("dto") @Validated final AS001RegistrationDto dto,
-			final BindingResult result, final RedirectAttributes attributes) {
+	        final BindingResult result, final RedirectAttributes attributes) throws Exception {
 
 		if (result.hasErrors()) {
 			return "setting/AS001-registration";
 		}
-
 		this.as001Service.userAccountRegistration(dto);
 		attributes.getFlashAttributes().clear();
 		attributes.addFlashAttribute("messages", "successfully.register");
 		return "redirect:/do-registration";
 	}
 
-	@GetMapping(value = { "/confirm-registration" })
-	public String confirmRegistration(final Model model) {
-
+	@GetMapping(value = { "/confirm-registration/{uuid}" })
+	public String confirmRegistration(@PathVariable("uuid") final String uuid) {
+		this.as001Service.userAccountConfirmation(uuid);
 		return "setting/AS001-reg-confirmation";
 	}
 }

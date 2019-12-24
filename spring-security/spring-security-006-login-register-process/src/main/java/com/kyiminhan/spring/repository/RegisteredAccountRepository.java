@@ -12,4 +12,6 @@ public interface RegisteredAccountRepository extends JpaRepository<RegisteredAcc
 
 	Optional<RegisteredAccount> findByEmail(String email);
 
+	Optional<RegisteredAccount> findByUuid(String uuid);
+
 }

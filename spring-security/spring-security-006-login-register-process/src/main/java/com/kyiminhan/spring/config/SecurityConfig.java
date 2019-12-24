@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 
-	private final String[] publicMatchers = { "/login", "/do-registration", "/confirm-registration" };
+	private final String[] publicMatchers = { "/login", "/do-registration", "/confirm-registration/*" };
 
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
