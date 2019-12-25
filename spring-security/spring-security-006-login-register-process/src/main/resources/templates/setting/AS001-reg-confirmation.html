@@ -24,56 +24,6 @@
 <title>Spring Security</title>
 </head>
 <body>
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModalCenter" tabindex="-1"
-		role="dialog" aria-labelledby="exampleModalCenterTitle"
-		aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-body">
-					<div class="row justify-content-center">
-
-						<div class="col-md-10 ">
-							<form class="p-4" action="#">
-								<h5 class="pb-2">LOGIN</h5>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<i class="fas fa-envelope"></i> <label class="mb-0"
-												for="txtEmail">Email</label><input type="text" id="txtEmail"
-												name="email" class="form-control form-control-sm"
-												autofocus="autofocus" autocomplete="off"> <small
-												id="emailHelp" class="form-text text-muted text-right">We'll
-												never share your email with anyone else.</small>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<i class="fas fa-unlock-alt"></i> <label class="mb-0"
-												for="txtPassword">Password</label><input type="password"
-												id="txtPassword" name="password"
-												class="form-control form-control-sm" autocomplete="off">
-											<a href="setting/AS001-forgot-pwd-request.html"
-												class="text-decoration-none"><small
-												class="form-text text-right ">Forgot Password</small></a>
-										</div>
-									</div>
-								</div>
-								<div class="row justify-content-center pt-3">
-									<a class="btn btn-sm btn-secondary mr-2 col-md-4"
-										href="member/M005-question-create-1.html"><i
-										class="fas fa-sign-in-alt"></i> Login </a>
-
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<header>
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info">
 			<a class="navbar-brand" href="S001-home.html">Laws Consulting</a>
@@ -123,13 +73,31 @@
 						<h5 class="pb-2">REGISTRATION</h5>
 						<div class="row">
 							<div class="col-md">
-								<div class="alert alert-success" role="alert">Register
-									Activation Successful!</div>
+								<div th:if="${messages}">
+									<div class="alert alert-success alert-dismissible fade show">
+										<small th:text="#{${messages}}"></small>
+										<button type="button" class="close" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+								</div>
+								<div th:if="${errors}">
+									<div class="alert alert-danger alert-dismissible fade show">
+										<small th:text="#{${errors}}"></small>
+										<button type="button" class="close" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="row justify-content-center pt-3">
-							<a class="btn btn-sm btn-secondary mr-2 col-md-2"
-								href="../S003-login.html">Login</a>
+						<div class="row justify-content-center pt-3" th:if="${errors}">
+							<a class="mr-2 col-md-2" th:href="@{/do-registration}">Registration</a>
+						</div>
+						<div class="row justify-content-center pt-3" th:if="${messages}">
+							<a class="mr-2 col-md-2" href="@{/login}l">Login</a>
 						</div>
 					</form>
 				</div>

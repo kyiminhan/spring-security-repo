@@ -46,13 +46,18 @@ public class AS001Controller {
 		}
 		this.as001Service.userAccountRegistration(dto);
 		attributes.getFlashAttributes().clear();
-		attributes.addFlashAttribute("messages", "successfully.register");
+		attributes.addFlashAttribute("messages", "success.register");
 		return "redirect:/do-registration";
 	}
 
 	@GetMapping(value = { "/confirm-registration/{uuid}" })
-	public String confirmRegistration(@PathVariable("uuid") final String uuid) {
-		this.as001Service.userAccountConfirmation(uuid);
+	public String confirmRegistration(@PathVariable("uuid") final String uuid, final Model model) {
+		if (this.as001Service.isRegisterExpired(uuid)) {
+			model.addAttribute("errors", "error.register.confirmation");
+		} else {
+			this.as001Service.userAccountConfirmation(uuid);
+			model.addAttribute("messages", "success.register.confirmation");
+		}
 		return "setting/AS001-reg-confirmation";
 	}
 }

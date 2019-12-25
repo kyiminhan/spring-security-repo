@@ -76,7 +76,7 @@
 
 						<div th:if="${messages}">
 							<div
-								class="alert alert-success alert-dismissible fade show rounded-0">
+								class="alert alert-success alert-dismissible fade show">
 								<small th:text="#{${messages}}"></small>
 								<button type="button" class="close" data-dismiss="alert"
 									aria-label="Close">
@@ -86,7 +86,7 @@
 						</div>
 						<div th:if="${errors}">
 							<div
-								class="alert alert-danger alert-dismissible fade show rounded-0">
+								class="alert alert-danger alert-dismissible fade show">
 								<small th:text="#{${errors}}"></small>
 								<button type="button" class="close" data-dismiss="alert"
 									aria-label="Close">
@@ -154,8 +154,8 @@
 										th:classappend="${#fields.hasErrors('confirmPassword')} ? border-danger"
 										autocomplete="off"><span toggle="#txtConfirmPassword"
 										class="fa fa-fw fa-eye field-icon toggle-password"></span> <small
-										class="text-danger" th:if="${#fields.hasErrors('password')}"
-										th:errors="*{password}"></small> <small class="text-danger"
+										class="text-danger" th:if="${#fields.hasErrors('confirmPassword')}"
+										th:errors="*{confirmPassword}"></small> <small class="text-danger"
 										th:if="${#fields.hasErrors('confirmPassword')}"
 										th:errors="*{confirmPassword}"></small>
 								</div>

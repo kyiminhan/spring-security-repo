@@ -11,4 +11,6 @@ public interface AS001Service {
 	boolean hasRegisteredEmail(String email);
 
 	void deleteAll();
+
+	boolean isRegisterExpired(String uuid);
 }

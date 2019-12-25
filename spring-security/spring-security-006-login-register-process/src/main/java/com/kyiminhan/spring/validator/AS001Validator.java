@@ -96,6 +96,7 @@ public class AS001Validator extends MyValidatorImpl {
 		}
 		final List<String> messages = validator.getMessages(result);
 
+		@SuppressWarnings("unused")
 		final String messageTemplate = messages.stream().collect(Collectors.joining(","));
 
 		return false;
