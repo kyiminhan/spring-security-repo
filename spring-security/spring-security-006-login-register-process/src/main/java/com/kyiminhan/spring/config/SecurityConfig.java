@@ -43,7 +43,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 
-	private final String[] publicMatchers = { "/login", "/do-registration", "/confirm-registration/*" };
+	// @formatter:off
+	private final String[] publicMatchers = {
+			  "/login"
+			, "/do-registration"
+			, "/confirm-registration/*"
+			, "/forgot-pwd-request"
+			, "/forgot-pwd-reset/*"
+		};
+
+	// @formatter:on
 
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
@@ -105,7 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					throw new BadCredentialsException("Email is required.");
 
 				} else if (!ObjectUtils.anyNotNull(authentication.getCredentials())
-				        | StringUtils.isBlank(authentication.getCredentials().toString())) {
+						| StringUtils.isBlank(authentication.getCredentials().toString())) {
 
 					throw new BadCredentialsException("Password is required.");
 

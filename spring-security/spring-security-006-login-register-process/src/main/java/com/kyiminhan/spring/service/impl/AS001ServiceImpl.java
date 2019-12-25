@@ -54,15 +54,10 @@ public class AS001ServiceImpl implements AS001Service {
 	@Override
 	public boolean hasRegisteredEmail(final String email) {
 		return (this.accRepo.findByEmail(email).orElse(null) != null) ? true
-		        : (this.regRepo.findByEmail(email).orElse(null) != null) ? true : false;
+				: (this.regRepo.findByEmail(email).orElse(null) != null) ? true : false;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	@Override
-	public void deleteAll() {
-		this.regRepo.deleteAll();
-	}
-
 	@Override
 	public void userAccountConfirmation(final String uuid) {
 		final RegisteredAccount regAccount = this.regRepo.findByUuid(uuid).orElse(null);
@@ -100,9 +95,19 @@ public class AS001ServiceImpl implements AS001Service {
 
 	}
 
+	@Transactional(readOnly = true)
 	@Override
-	public boolean isRegisterExpired(final String uuid) {
+	public boolean isRegistrationExpired(final String uuid) {
 		final RegisteredAccount acc = this.regRepo.findByUuid(uuid).orElse(null);
 		return (null != acc) ? LocalDateTime.now().isAfter(acc.getExpiry()) ? true : false : true;
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public void deleteRegistrationExpired(final String uuid) {
+		final RegisteredAccount acc = this.regRepo.findByUuid(uuid).orElse(null);
+		if (null != acc) {
+			this.regRepo.delete(acc);
+		}
 	}
 }

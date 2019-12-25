@@ -44,41 +44,41 @@ public abstract class MyValidatorImpl implements Validator {
 		}
 	}
 
-	final protected String getMessage(final String msgCode) {
+	final public String getMessage(final String msgCode) {
 		final String message = this.msgSource.getMessage(msgCode, null, null);
 		return message;
 	}
 
-	final protected Object[] getMsgObjArr(final String msgCode) {
+	final public Object[] getMsgObjArr(final String msgCode) {
 		final String message = this.msgSource.getMessage(msgCode, null, null);
 		return new Object[] { message };
 	}
 
-	final protected boolean isAcutalEmail(final String email) {
+	final public boolean isAcutalEmail(final String email) {
 		final boolean allowLocal = true;
 		boolean valid = true;
 		valid = EmailValidator.getInstance(allowLocal).isValid(email);
 		return valid;
 	}
 
-	final protected boolean isStrongPasswordPattern(final String password) {
+	final public boolean isStrongPasswordPattern(final String password) {
 
 		final LengthRule lengthRule = new LengthRule();
 		lengthRule.setMinimumLength(8);
 
 		final PasswordValidator validator = new PasswordValidator(Arrays.asList(
-		        // at least 8 characters
-		        lengthRule,
-		        // at least one upper-case character
-		        new CharacterRule(EnglishCharacterData.UpperCase, 1),
-		        // at least one lower-case character
-		        new CharacterRule(EnglishCharacterData.LowerCase, 1),
-		        // at least one digit character
-		        new CharacterRule(EnglishCharacterData.Digit, 1),
-		        // at least one symbol (special character)
-		        new CharacterRule(EnglishCharacterData.Special, 1),
-		        // no whitespace
-		        new WhitespaceRule()));
+				// at least 8 characters
+				lengthRule,
+				// at least one upper-case character
+				new CharacterRule(EnglishCharacterData.UpperCase, 1),
+				// at least one lower-case character
+				new CharacterRule(EnglishCharacterData.LowerCase, 1),
+				// at least one digit character
+				new CharacterRule(EnglishCharacterData.Digit, 1),
+				// at least one symbol (special character)
+				new CharacterRule(EnglishCharacterData.Special, 1),
+				// no whitespace
+				new WhitespaceRule()));
 
 		final RuleResult result = validator.validate(new PasswordData(password));
 		if (result.isValid()) {

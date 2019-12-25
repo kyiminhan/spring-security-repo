@@ -10,7 +10,7 @@ public interface AS001Service {
 
 	boolean hasRegisteredEmail(String email);
 
-	void deleteAll();
+	boolean isRegistrationExpired(String uuid);
 
-	boolean isRegisterExpired(String uuid);
+	void deleteRegistrationExpired(String uuid);
 }

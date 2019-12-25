@@ -6,4 +6,9 @@ public interface AS002Service {
 
 	void changeInitPassword(AS002PwdChangeDto dto);
 
+	void createPasswordRequest(String email);
+
+	boolean hasPasswordRequest(String uuid);
+
+	void doPasswordReset(AS002PwdChangeDto dto, String uuid);
 }

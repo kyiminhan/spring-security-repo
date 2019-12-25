@@ -39,7 +39,7 @@ public class AS001Controller {
 
 	@PostMapping(value = { "/do-registration" })
 	public String doRegistration(@ModelAttribute("dto") @Validated final AS001RegistrationDto dto,
-	        final BindingResult result, final RedirectAttributes attributes) throws Exception {
+			final BindingResult result, final RedirectAttributes attributes) throws Exception {
 
 		if (result.hasErrors()) {
 			return "setting/AS001-registration";
@@ -52,7 +52,8 @@ public class AS001Controller {
 
 	@GetMapping(value = { "/confirm-registration/{uuid}" })
 	public String confirmRegistration(@PathVariable("uuid") final String uuid, final Model model) {
-		if (this.as001Service.isRegisterExpired(uuid)) {
+		if (this.as001Service.isRegistrationExpired(uuid)) {
+			this.as001Service.deleteRegistrationExpired(uuid);
 			model.addAttribute("errors", "error.register.confirmation");
 		} else {
 			this.as001Service.userAccountConfirmation(uuid);

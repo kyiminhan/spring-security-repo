@@ -20,6 +20,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import com.kyiminhan.spring.entity.PasswordRequest;
 import com.kyiminhan.spring.entity.RegisteredAccount;
 import com.kyiminhan.spring.service.dto.Mail;
 
@@ -42,9 +43,10 @@ public class EmailService {
 
 		final MimeMessage message = this.emailSender.createMimeMessage();
 		final MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-		        StandardCharsets.UTF_8.name());
+				StandardCharsets.UTF_8.name());
 
-		// helper.addAttachment("logo.png", new ClassPathResource("memorynotfound-logo.png"));
+		// helper.addAttachment("logo.png", new
+		// ClassPathResource("memorynotfound-logo.png"));
 
 		final Context context = new Context();
 		context.setVariables(mail.getModel());
@@ -71,7 +73,7 @@ public class EmailService {
 		model.put("name", String.join(" ", regAcc.getFirstName(), regAcc.getLastName()));
 
 		final String activationURL = String.join("", this.getServerNameAndPort(), "/confirm-registration", "/",
-		        regAcc.getUuid());
+				regAcc.getUuid());
 
 		model.put("activationURL", activationURL);
 
@@ -89,5 +91,10 @@ public class EmailService {
 		final String serverName = req.getServerName();
 		final String port = String.valueOf(req.getServerPort());
 		return String.join("", scheme, "://", serverName, ":", port);
+	}
+
+	public void sendForgotPasswordResponseEmail(final PasswordRequest pwdRequest) {
+		// TODO Auto-generated method stub
+
 	}
 }
