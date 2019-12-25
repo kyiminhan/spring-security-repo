@@ -4,13 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.kyiminhan.spring.entity.Account;
 import com.kyiminhan.spring.types.AccountLock;
@@ -27,8 +23,6 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Component
-@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = WebApplicationContext.SCOPE_SESSION)
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -39,7 +33,7 @@ public class User implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		final Collection<GrantedAuthority> authorities = new HashSet<>();
 		this.account.getAuthorities().forEach(accountAuth -> authorities
-		        .add(new SimpleGrantedAuthority(accountAuth.getAuthority().getGrantAuthRole())));
+				.add(new SimpleGrantedAuthority(accountAuth.getAuthority().getGrantAuthRole())));
 		return authorities;
 	}
 

@@ -84,7 +84,7 @@ public class InitLoadData {
 			accManager.setAuthorities(authorities);
 
 			final AccountPassword managerAccPwd = AccountPassword.builder().password(managerPwd).account(accManager)
-			        .build();
+					.build();
 			passwords = new HashSet<>();
 			passwords.add(managerAccPwd);
 			accManager.setPasswords(passwords);
@@ -101,7 +101,7 @@ public class InitLoadData {
 						.loginDt(LocalDateTime.now())
 						.passwordExpiredDt(LocalDateTime.now().plusDays(90))
 						.accountLock(AccountLock.UN_LOCKED)
-						.initialPwdFg(InitialPwdFg.NON_INITIAL)
+						.initialPwdFg(InitialPwdFg.INITIAL)
 						.build();
 				// @formatter:on
 			authorities = new HashSet<>();

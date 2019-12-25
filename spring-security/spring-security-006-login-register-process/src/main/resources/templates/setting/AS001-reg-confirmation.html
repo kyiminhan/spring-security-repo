@@ -26,7 +26,7 @@
 <body>
 	<header>
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info">
-			<a class="navbar-brand" href="S001-home.html">Laws Consulting</a>
+			<a class="navbar-brand" href="S001-home.html">Spring Security</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarsExampleDefault"
 				aria-controls="navbarsExampleDefault" aria-expanded="false"
@@ -38,25 +38,15 @@
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item"><a class="nav-link"
 						href="../S001-home.html"><i class="fa fa-home mr-1"></i>Home </a></li>
-					<li class="nav-item"><a class="nav-link"
-						href="../S007-sample-qa.html"><i
-							class="far fa-question-circle mr-1"></i>Sample Q/A </a></li>
-					<li class="nav-item"><a class="nav-link" href="#"
-						data-toggle="modal" data-target="#exampleModalCenter"><i
-							class="fas fa-plus pl-2"></i> INQUIRY </a></li>
-					<li class="nav-item"><a class="nav-link"
-						href="../S002-about-us.html"><i class="fas fa-users mr-1"></i>About
-							Us</a></li>
 				</ul>
 
 				<div class="my-2 my-lg-0">
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item active"><a class="nav-link"
-							href="M001-registeration.html"><i
+							th:href="@{/do-registration}"><i
 								class="fa fa-registered mr-1"></i>Register </a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="../S003-login.html"><i class="fa fa-sign-in-alt mr-1"></i>Login
-						</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/login}"><i
+								class="fa fa-sign-in-alt mr-1"></i>Login </a></li>
 					</ul>
 				</div>
 
@@ -64,13 +54,14 @@
 		</nav>
 	</header>
 
+
 	<div class="container-fluid">
 		<div class="jumbotron-fluid"
 			style="min-height: 100vh; padding-top: 4rem; margin-bottom: 0px;">
 			<div class="row justify-content-center">
 				<div class="col-md-6 ">
 					<form class="p-4">
-						<h5 class="pb-2">REGISTRATION</h5>
+						<h5 class="pb-2">Registration Activation</h5>
 						<div class="row">
 							<div class="col-md">
 								<div th:if="${messages}">

@@ -20,7 +20,7 @@ public class AS002Validator extends MyValidatorImpl {
 	protected void validateRequired(final Object target, final Errors e) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "newPassword", "required", this.getMsgObjArr("newPassword"));
 		ValidationUtils.rejectIfEmptyOrWhitespace(e, "confirmNewPassword", "required",
-		        this.getMsgObjArr("confirmNewPassword"));
+				this.getMsgObjArr("confirmNewPassword"));
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class AS002Validator extends MyValidatorImpl {
 			if (!this.isStrongPasswordPattern(dto.getNewPassword())) {
 				e.rejectValue("newPassword", "password.invalid");
 			} else if (!StringUtils.equals(dto.getNewPassword(), dto.getConfirmNewPassword())) {
-				e.rejectValue("confirmNewPassword", "confirmPassword.notMismatch");
+				e.rejectValue("confirmNewPassword", "confirmNewPassword.notMismatch");
 			}
 		}
 	}

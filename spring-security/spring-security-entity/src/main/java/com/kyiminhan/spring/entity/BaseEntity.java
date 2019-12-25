@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import org.hibernate.annotations.Where;
 import org.springframework.security.core.Authentication;
@@ -76,4 +77,16 @@ public abstract class BaseEntity implements Serializable {
 		this.lastModifiedBy = name;
 		this.lastModifiedDt = LocalDateTime.now();
 	}
+
+	@PreUpdate
+	private void preUpdate() {
+
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final String name = (null == auth) ? this.createdBy : auth.getName();
+
+		this.uuid = UUID.randomUUID().toString();
+		this.lastModifiedBy = name;
+		this.lastModifiedDt = LocalDateTime.now();
+	}
+
 }
