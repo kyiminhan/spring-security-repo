@@ -1,18 +1,6 @@
 package com.kyiminhan.spring.validator;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.routines.EmailValidator;
-import org.passay.CharacterRule;
-import org.passay.EnglishCharacterData;
-import org.passay.LengthRule;
-import org.passay.PasswordData;
-import org.passay.PasswordValidator;
-import org.passay.RuleResult;
-import org.passay.WhitespaceRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -61,45 +49,6 @@ public class AS001Validator extends MyValidatorImpl {
 			}
 		}
 
-	}
-
-	private boolean isAcutalEmail(final String email) {
-		final boolean allowLocal = true;
-		boolean valid = true;
-		valid = EmailValidator.getInstance(allowLocal).isValid(email);
-		return valid;
-	}
-
-	private boolean isStrongPasswordPattern(final String password) {
-
-		final LengthRule lengthRule = new LengthRule();
-		lengthRule.setMinimumLength(8);
-
-		final PasswordValidator validator = new PasswordValidator(Arrays.asList(
-		        // at least 8 characters
-		        lengthRule,
-		        // at least one upper-case character
-		        new CharacterRule(EnglishCharacterData.UpperCase, 1),
-		        // at least one lower-case character
-		        new CharacterRule(EnglishCharacterData.LowerCase, 1),
-		        // at least one digit character
-		        new CharacterRule(EnglishCharacterData.Digit, 1),
-		        // at least one symbol (special character)
-		        new CharacterRule(EnglishCharacterData.Special, 1),
-		        // no whitespace
-		        new WhitespaceRule()
-
-		));
-		final RuleResult result = validator.validate(new PasswordData(password));
-		if (result.isValid()) {
-			return true;
-		}
-		final List<String> messages = validator.getMessages(result);
-
-		@SuppressWarnings("unused")
-		final String messageTemplate = messages.stream().collect(Collectors.joining(","));
-
-		return false;
 	}
 
 }

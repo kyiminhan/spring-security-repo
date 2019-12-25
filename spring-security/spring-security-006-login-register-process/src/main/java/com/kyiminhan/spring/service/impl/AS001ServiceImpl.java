@@ -21,6 +21,7 @@ import com.kyiminhan.spring.service.AS001Service;
 import com.kyiminhan.spring.service.dto.AS001RegistrationDto;
 import com.kyiminhan.spring.types.AccountLock;
 import com.kyiminhan.spring.types.Authority;
+import com.kyiminhan.spring.types.InitialPwdFg;
 
 import lombok.Setter;
 
@@ -74,6 +75,7 @@ public class AS001ServiceImpl implements AS001Service {
 		account.setLoginDt(LocalDateTime.now());
 		account.setPasswordExpiredDt(LocalDateTime.now().plusDays(90));
 		account.setAccountLock(AccountLock.UN_LOCKED);
+		account.setInitialPwdFg(InitialPwdFg.NON_INITIAL);
 
 		final Set<AccountAuthority> authorities = new HashSet<>();
 		authUser.setAccount(account);

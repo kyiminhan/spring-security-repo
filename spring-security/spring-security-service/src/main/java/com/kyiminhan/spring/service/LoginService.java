@@ -9,4 +9,6 @@ public interface LoginService extends UserDetailsService {
 	void doLoginFailureProcess(String email);
 
 	void doLoginSuccessProcess(String email);
+
+	boolean isInitialPassword(String email);
 }

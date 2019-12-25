@@ -14,6 +14,7 @@ import com.kyiminhan.spring.entity.Account;
 import com.kyiminhan.spring.repository.AccountRepository;
 import com.kyiminhan.spring.service.LoginService;
 import com.kyiminhan.spring.types.AccountLock;
+import com.kyiminhan.spring.types.InitialPwdFg;
 
 import lombok.NonNull;
 import lombok.Setter;
@@ -41,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
 		if (null != account) {
 			final int i = account.getLoginAttempt() + 1;
 			final AccountLock accountLock = (LoginService.LIMIT_ATTEMPT <= i) ? AccountLock.LOCKED
-					: AccountLock.UN_LOCKED;
+			        : AccountLock.UN_LOCKED;
 			account.setLoginAttempt(i);
 			account.setAccountLock(accountLock);
 			this.accRepo.saveAndFlush(account);
@@ -58,6 +59,13 @@ public class LoginServiceImpl implements LoginService {
 		account.setLoginAttempt(0);
 		account.setLoginDt(LocalDateTime.now());
 		this.accRepo.saveAndFlush(account);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public boolean isInitialPassword(final String email) {
+		return (InitialPwdFg.INITIAL.equals(this.accRepo.findByEmail(email).orElse(null).getInitialPwdFg())) ? true
+		        : false;
 	}
 
 }

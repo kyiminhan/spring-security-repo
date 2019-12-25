@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import com.kyiminhan.spring.types.AccountLock;
+import com.kyiminhan.spring.types.InitialPwdFg;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +45,10 @@ public class Account extends BaseEntity {
 	@Column(nullable = false)
 	private AccountLock accountLock;
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private InitialPwdFg initialPwdFg;
+
 	@Column(nullable = false)
 	private int loginAttempt;
 
@@ -60,15 +65,17 @@ public class Account extends BaseEntity {
 	private Set<AccountAuthority> authorities;
 
 	@Builder
-	public Account(Long id, String firstName, String lastName, String email, String password, AccountLock accountLock,
-			int loginAttempt, LocalDateTime loginDt, LocalDateTime passwordExpiredDt, Set<AccountPassword> passwords,
-			Set<AccountAuthority> authorities) {
+	public Account(final Long id, final String firstName, final String lastName, final String email,
+	        final String password, final AccountLock accountLock, final InitialPwdFg initialPwdFg,
+	        final int loginAttempt, final LocalDateTime loginDt, final LocalDateTime passwordExpiredDt,
+	        final Set<AccountPassword> passwords, final Set<AccountAuthority> authorities) {
 		super(id);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 		this.accountLock = accountLock;
+		this.initialPwdFg = initialPwdFg;
 		this.loginAttempt = loginAttempt;
 		this.loginDt = loginDt;
 		this.passwordExpiredDt = passwordExpiredDt;

@@ -14,6 +14,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.Where;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.kyiminhan.spring.types.DelFg;
 
@@ -56,18 +58,22 @@ public abstract class BaseEntity implements Serializable {
 	@Column(nullable = false, insertable = true, updatable = true)
 	protected LocalDateTime lastModifiedDt;
 
-	public BaseEntity(Long id) {
+	public BaseEntity(final Long id) {
 		super();
 		this.id = id;
 	}
 
 	@PrePersist
 	private void prePersist() {
+
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final String name = (null == auth) ? "SYSTEM" : auth.getName();
+
 		this.uuid = UUID.randomUUID().toString();
 		this.delFg = DelFg.ACTIVE;
-		this.createdBy = "ADMIN";
+		this.createdBy = name;
 		this.createdDt = LocalDateTime.now();
-		this.lastModifiedBy = "ADMIN";
+		this.lastModifiedBy = name;
 		this.lastModifiedDt = LocalDateTime.now();
 	}
 }

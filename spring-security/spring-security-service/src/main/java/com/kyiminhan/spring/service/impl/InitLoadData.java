@@ -17,6 +17,7 @@ import com.kyiminhan.spring.entity.AccountPassword;
 import com.kyiminhan.spring.repository.AccountRepository;
 import com.kyiminhan.spring.types.AccountLock;
 import com.kyiminhan.spring.types.Authority;
+import com.kyiminhan.spring.types.InitialPwdFg;
 
 import lombok.Setter;
 
@@ -44,6 +45,7 @@ public class InitLoadData {
 				.loginDt(LocalDateTime.now())
 				.passwordExpiredDt(LocalDateTime.now().plusDays(90))
 				.accountLock(AccountLock.UN_LOCKED)
+				.initialPwdFg(InitialPwdFg.NON_INITIAL)
 				.build();
 		// @formatter:on
 			Set<AccountAuthority> authorities = new HashSet<>();
@@ -68,6 +70,7 @@ public class InitLoadData {
 					.loginDt(LocalDateTime.now())
 					.passwordExpiredDt(LocalDateTime.now().plusDays(90))
 					.accountLock(AccountLock.UN_LOCKED)
+					.initialPwdFg(InitialPwdFg.NON_INITIAL)
 					.build();
 			// @formatter:on
 			authorities = new HashSet<>();
@@ -81,7 +84,7 @@ public class InitLoadData {
 			accManager.setAuthorities(authorities);
 
 			final AccountPassword managerAccPwd = AccountPassword.builder().password(managerPwd).account(accManager)
-					.build();
+			        .build();
 			passwords = new HashSet<>();
 			passwords.add(managerAccPwd);
 			accManager.setPasswords(passwords);
@@ -98,6 +101,7 @@ public class InitLoadData {
 						.loginDt(LocalDateTime.now())
 						.passwordExpiredDt(LocalDateTime.now().plusDays(90))
 						.accountLock(AccountLock.UN_LOCKED)
+						.initialPwdFg(InitialPwdFg.NON_INITIAL)
 						.build();
 				// @formatter:on
 			authorities = new HashSet<>();
