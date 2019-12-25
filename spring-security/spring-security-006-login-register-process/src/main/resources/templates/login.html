@@ -20,6 +20,16 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.css" />
 
 <title>Spring Security</title>
+<style type="text/css">
+.field-icon {
+	float: right;
+	margin-left: -25px;
+	margin-right: 5px;
+	margin-top: -25px;
+	position: relative;
+	z-index: 2;
+}
+</style>
 </head>
 <body>
 	<header>
@@ -92,7 +102,9 @@
 										for="txtPassword">Password</label><input type="password"
 										id="txtPassword" name="password"
 										class="form-control form-control-sm" autocomplete="off">
-									<a href="#" class="text-decoration-none"><small
+									<span toggle="#txtPassword"
+										class="fa fa-fw fa-eye field-icon toggle-password"></span> <a
+										href="#" class="text-decoration-none"><small
 										class="form-text text-right ">Forgot Password</small></a>
 								</div>
 							</div>
@@ -133,5 +145,18 @@
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 		crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		debugger
+		$(".toggle-password").click(function() {
+
+			$(this).toggleClass("fa-eye fa-eye-slash");
+			var input = $($(this).attr("toggle"));
+			if (input.attr("type") == "password") {
+				input.attr("type", "text");
+			} else {
+				input.attr("type", "password");
+			}
+		});
+	</script>
 </body>
 </html>

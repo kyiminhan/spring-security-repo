@@ -48,7 +48,7 @@ public class EmailService {
 
 		final Context context = new Context();
 		context.setVariables(mail.getModel());
-		final String html = this.templateEngine.process("email-template", context);
+		final String html = this.templateEngine.process("email/email-template", context);
 
 		helper.setTo(mail.getTo());
 		helper.setText(html, true);
