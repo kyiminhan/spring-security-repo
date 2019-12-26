@@ -49,14 +49,16 @@ public class AS002ServiceImpl implements AS002Service {
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public void createPasswordRequest(final String email) {
-
-		this.pwdReqRepo.deleteAllByEmail(email);
+	public void createPasswordRequest(final String email) throws Exception {
 
 		if (null != this.accRepo.findByEmail(email).orElse(null)) {
 
 			final LocalDateTime expiryDate = LocalDateTime.now().plusDays(1);
-			final PasswordRequest pwdRequest = PasswordRequest.builder().email(email).expiry(expiryDate).build();
+
+			final PasswordRequest request = this.pwdReqRepo.findByEmail(email).orElse(null);
+			final PasswordRequest pwdRequest = (null != request) ? request
+			        : PasswordRequest.builder().email(email).build();
+			pwdRequest.setExpiry(expiryDate);
 
 			this.pwdReqRepo.saveAndFlush(pwdRequest);
 
@@ -73,14 +75,17 @@ public class AS002ServiceImpl implements AS002Service {
 	@Override
 	public void doPasswordReset(final AS002PwdChangeDto dto, final String uuid) {
 		final PasswordRequest request = this.pwdReqRepo.findByUuid(uuid).orElse(null);
-		final Account account = this.accRepo.findByEmail(request.getEmail()).orElse(null);
+		if (null != request) {
+			final Account account = this.accRepo.findByEmail(request.getEmail()).orElse(null);
 
-		final String newPassword = this.encoder.encode(dto.getNewPassword());
-		account.setPassword(newPassword);
+			final String newPassword = this.encoder.encode(dto.getNewPassword());
+			account.setPassword(newPassword);
 
-		final AccountPassword accPwd = AccountPassword.builder().password(newPassword).account(account).build();
-		account.getPasswords().add(accPwd);
+			final AccountPassword accPwd = AccountPassword.builder().password(newPassword).account(account).build();
+			account.getPasswords().add(accPwd);
 
-		this.accRepo.saveAndFlush(account);
+			this.accRepo.saveAndFlush(account);
+			this.pwdReqRepo.delete(request);
+		}
 	}
 }

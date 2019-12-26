@@ -27,7 +27,7 @@ public class PasswordRequest extends BaseEntity {
 	private String email;
 
 	@NotNull
-	@Column(nullable = false, insertable = true, updatable = false)
+	@Column(nullable = false)
 	private LocalDateTime expiry;
 
 	@Builder

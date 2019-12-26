@@ -12,6 +12,6 @@ public interface PasswordRequestRepository extends JpaRepository<PasswordRequest
 
 	Optional<PasswordRequest> findByUuid(String uuid);
 
-	void deleteAllByEmail(String email);
+	Optional<PasswordRequest> findByEmail(String email);
 
 }

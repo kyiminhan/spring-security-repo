@@ -1,5 +1,7 @@
 package com.kyiminhan.spring.controller.setting;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +41,7 @@ public class AS002Controller {
 
 	@PostMapping(value = { "/forgot-pwd-request" })
 	public String doForgotPasswordRequest(@ModelAttribute("dto") final AS002PwdChangeDto dto,
-			final BindingResult result, final RedirectAttributes attributes) {
+	        final BindingResult result, final RedirectAttributes attributes) throws Exception {
 
 		this.as002Service.createPasswordRequest(dto.getEmail());
 		attributes.getFlashAttributes().clear();
@@ -49,7 +51,12 @@ public class AS002Controller {
 
 	@GetMapping(value = { "/forgot-pwd-reset/{uuid}" })
 	public String doForgotPasswordReset(@PathVariable("uuid") final String uuid, final Model model) {
-		if (!this.as002Service.hasPasswordRequest(uuid)) {
+		final Map<String, Object> md = model.asMap();
+		final String messages = ((md != null) && !md.isEmpty() && md.containsKey(uuid)) ? md.get(uuid).toString()
+		        : null;
+		if (null != messages) {
+			model.addAttribute("messages", messages);
+		} else if (!this.as002Service.hasPasswordRequest(uuid)) {
 			model.addAttribute("errors", "error.forgot.password.reset");
 		}
 		model.addAttribute("dto", AS002PwdChangeDto.builder().build());
@@ -58,15 +65,23 @@ public class AS002Controller {
 
 	@PostMapping(value = { "/forgot-pwd-reset/{uuid}" })
 	public String doForgotPasswordReset(@PathVariable("uuid") final String uuid,
-			@ModelAttribute("dto") @Validated final AS002PwdChangeDto dto, final BindingResult result,
-			final RedirectAttributes attributes) {
+	        @ModelAttribute("dto") @Validated final AS002PwdChangeDto dto, final BindingResult result,
+	        final RedirectAttributes attributes) {
+
+		attributes.getFlashAttributes().clear();
+		if (!this.as002Service.hasPasswordRequest(uuid)) {
+			attributes.addFlashAttribute("errors", "error.forgot.password.reset");
+			return "redirect:/forgot-pwd-reset/" + uuid;
+		}
+
 		if (result.hasErrors()) {
 			return "setting/AS002-forgot-pwd-reset";
 		}
+
 		this.as002Service.doPasswordReset(dto, uuid);
-		attributes.getFlashAttributes().clear();
-		attributes.addFlashAttribute("messages", "success.forgot.password.reset");
-		return "redirect:/forgot-pwd-reset";
+		attributes.addFlashAttribute(uuid, "success.forgot.password.reset");
+		return "redirect:/forgot-pwd-reset/" + uuid;
+
 	}
 
 	@GetMapping(value = { "/init-password-change" })
@@ -77,7 +92,7 @@ public class AS002Controller {
 
 	@PostMapping(value = { "/init-password-change" })
 	public String doInitPasswordChange(@ModelAttribute("dto") @Validated final AS002PwdChangeDto dto,
-			final BindingResult result, final RedirectAttributes attributes) {
+	        final BindingResult result, final RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return "setting/AS002-initial-pwd-change";
 		}
