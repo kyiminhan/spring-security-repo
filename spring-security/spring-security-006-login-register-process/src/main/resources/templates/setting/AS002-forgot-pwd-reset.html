@@ -1,174 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/common/layout}">
 <head>
-<!-- Required meta tags -->
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<!-- Bootstrap CSS -->
-<link rel="icon"
-	href="https://getbootstrap.com/docs/4.3/assets/img/favicons/favicon-32x32.png"
-	sizes="32x32" type="image/png">
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	crossorigin="anonymous">
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.css" />
-
+<link rel="stylesheet" th:href="@{/static/css/pwd-eye.css}" />
 <title>Spring Security</title>
-<style type="text/css">
-.field-icon {
-	float: right;
-	margin-left: -25px;
-	margin-right: 5px;
-	margin-top: -25px;
-	position: relative;
-	z-index: 2;
-}
-</style>
 </head>
 <body>
-	<header>
-		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info">
-			<a class="navbar-brand" href="S001-home.html">Spring Security</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarsExampleDefault"
-				aria-controls="navbarsExampleDefault" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
 
-			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item"><a class="nav-link"
-						href="../S001-home.html"><i class="fa fa-home mr-1"></i>Home </a></li>
-				</ul>
+	<div class="row justify-content-center" layout:fragment="content">
+		<div class="col-md-6 ">
+			<form class="p-4" th:action="@{/forgot-pwd-reset/__${uuid}__}"
+				th:method="post" th:object="${dto}">
+				<h5 class="pb-2">Password Reset</h5>
 
-				<div class="my-2 my-lg-0">
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item active"><a class="nav-link"
-							th:href="@{/do-registration}"><i
-								class="fa fa-registered mr-1"></i>Register </a></li>
-						<li class="nav-item"><a class="nav-link" th:href="@{/login}"><i
-								class="fa fa-sign-in-alt mr-1"></i>Login </a></li>
-					</ul>
+				<div id="msgArea" th:include="/common/messages.html::messages"></div>
+
+				<div th:if="${errors}">
+					<div class="row justify-content-center pt-3">
+						<a th:href="@{/forgot-pwd-request}">Forgot Password</a>
+					</div>
 				</div>
-
-			</div>
-		</nav>
-	</header>
-
-
-	<div class="container-fluid">
-		<div class="jumbotron-fluid"
-			style="min-height: 100vh; padding-top: 4rem; margin-bottom: 0px;">
-			<div class="row justify-content-center">
-				<div class="col-md-6 ">
-					<form class="p-4" th:action="@{/forgot-pwd-reset/__${uuid}__}"
-						th:method="post" th:object="${dto}">
-						<h5 class="pb-2">Password Reset</h5>
-
-						<div th:if="${messages}">
-							<div class="alert alert-success alert-dismissible fade show">
-								<small th:text="#{${messages}}"></small>
-								<button type="button" class="close" data-dismiss="alert"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
+				<div th:if="${errors == null}">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<i class="fas fa-unlock-alt"></i> <label class="mb-0"
+									for="txtNewPassword" th:text="#{lblNewPassword}"></label><input
+									type="password" th:field="*{newPassword}" id="txtNewPassword"
+									class="form-control form-control-sm"
+									th:classappend="${#fields.hasErrors('newPassword')} ? border-danger"
+									autocomplete="off"><span toggle="#txtNewPassword"
+									class="fa fa-fw fa-eye field-icon toggle-password"></span> <small
+									class="text-danger" th:if="${#fields.hasErrors('newPassword')}"
+									th:errors="*{newPassword}"></small>
 							</div>
 						</div>
-						<div th:if="${errors}">
-							<div class="alert alert-danger alert-dismissible fade show">
-								<small th:text="#{${errors}}"></small>
-								<button type="button" class="close" data-dismiss="alert"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
+						<div class="col-md-12">
+							<div class="form-group">
+								<i class="fas fa-unlock-alt"></i> <label class="mb-0"
+									for="txtConfirmNewPassword" th:text="#{lblConfirmNewPassword}"></label><input
+									type="password" th:field="*{confirmNewPassword}"
+									id="txtConfirmNewPassword" class="form-control form-control-sm"
+									th:classappend="${#fields.hasErrors('confirmNewPassword')} ? border-danger"
+									autocomplete="off"><span
+									toggle="#txtConfirmNewPassword"
+									class="fa fa-fw fa-eye field-icon toggle-password"></span> <small
+									class="text-danger"
+									th:if="${#fields.hasErrors('confirmNewPassword')}"
+									th:errors="*{confirmNewPassword}"></small>
 							</div>
 						</div>
-						<div th:if="${errors}">
-							<div class="row justify-content-center pt-3">
-								<a th:href="@{/forgot-pwd-request}">Forgot Password</a>
-							</div>
-						</div>
-						<div th:if="${errors == null}">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<i class="fas fa-unlock-alt"></i> <label class="mb-0"
-											for="txtNewPassword" th:text="#{lblNewPassword}"></label><input
-											type="password" th:field="*{newPassword}" id="txtNewPassword"
-											class="form-control form-control-sm"
-											th:classappend="${#fields.hasErrors('newPassword')} ? border-danger"
-											autocomplete="off"><span toggle="#txtNewPassword"
-											class="fa fa-fw fa-eye field-icon toggle-password"></span> <small
-											class="text-danger"
-											th:if="${#fields.hasErrors('newPassword')}"
-											th:errors="*{newPassword}"></small>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<i class="fas fa-unlock-alt"></i> <label class="mb-0"
-											for="txtConfirmNewPassword"
-											th:text="#{lblConfirmNewPassword}"></label><input
-											type="password" th:field="*{confirmNewPassword}"
-											id="txtConfirmNewPassword"
-											class="form-control form-control-sm"
-											th:classappend="${#fields.hasErrors('confirmNewPassword')} ? border-danger"
-											autocomplete="off"><span
-											toggle="#txtConfirmNewPassword"
-											class="fa fa-fw fa-eye field-icon toggle-password"></span> <small
-											class="text-danger"
-											th:if="${#fields.hasErrors('confirmNewPassword')}"
-											th:errors="*{confirmNewPassword}"></small>
-									</div>
-								</div>
-							</div>
-							<div class="row justify-content-center pt-3">
-								<button type="submit"
-									class="btn btn-sm btn-secondary mr-2 col-md-2">Save</button>
-							</div>
-						</div>
-					</form>
+					</div>
+					<div class="row justify-content-center pt-3">
+						<button type="submit"
+							class="btn btn-sm btn-secondary mr-2 col-md-2">Save</button>
+					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	</div>
-
-
-	<!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-		crossorigin="anonymous"></script>
-
-	<script type="text/javascript">
-		debugger
-		$(".toggle-password").click(function() {
-
-			$(this).toggleClass("fa-eye fa-eye-slash");
-			var input = $($(this).attr("toggle"));
-			if (input.attr("type") == "password") {
-				input.attr("type", "text");
-			} else {
-				input.attr("type", "password");
-			}
-		});
-	</script>
+	<th:block layout:fragment="script">
+		<script th:src="@{/static/js/pwd-eye.js}"></script>
+	</th:block>
 </body>
 </html>
