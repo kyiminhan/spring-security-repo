@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div th:fragment="messages">
+		<div th:if="${messages}">
+			<div class="alert alert-success alert-dismissible fade show">
+				<small th:text="#{${messages}}"></small>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
+		<div th:if="${errors}">
+			<div class="alert alert-danger alert-dismissible fade show">
+				<small th:text="#{${errors}}"></small>
+				<button type="button" class="close" data-dismiss="alert"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
