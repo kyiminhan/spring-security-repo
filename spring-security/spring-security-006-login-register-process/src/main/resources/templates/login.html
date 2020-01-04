@@ -18,18 +18,8 @@
 <!-- Font Awesome -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.css" />
-
+<link rel="stylesheet" th:href="@{/static/css/pwd-eye.css}" />
 <title>Spring Security</title>
-<style type="text/css">
-.field-icon {
-	float: right;
-	margin-left: -25px;
-	margin-right: 5px;
-	margin-top: -25px;
-	position: relative;
-	z-index: 2;
-}
-</style>
 </head>
 <body>
 	<header>
@@ -145,18 +135,6 @@
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 		crossorigin="anonymous"></script>
-	<script type="text/javascript">
-		debugger
-		$(".toggle-password").click(function() {
-
-			$(this).toggleClass("fa-eye fa-eye-slash");
-			var input = $($(this).attr("toggle"));
-			if (input.attr("type") == "password") {
-				input.attr("type", "text");
-			} else {
-				input.attr("type", "password");
-			}
-		});
-	</script>
+	<script th:src="@{/static/js/pwd-eye.js}"></script>
 </body>
 </html>

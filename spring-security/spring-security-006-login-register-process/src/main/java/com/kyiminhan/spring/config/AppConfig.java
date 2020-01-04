@@ -7,10 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@EnableWebMvc
 @Configuration
-public class AppConfig {
+public class AppConfig implements WebMvcConfigurer {
 
+	@Override
 	@Bean
 	public LocalValidatorFactoryBean getValidator() {
 		final LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
@@ -25,5 +30,11 @@ public class AppConfig {
 		msgSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
 		msgSource.setCacheSeconds(3600);
 		return msgSource;
+	}
+
+	@Override
+	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		WebMvcConfigurer.super.addResourceHandlers(registry);
 	}
 }
